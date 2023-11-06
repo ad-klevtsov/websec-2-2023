@@ -2,32 +2,34 @@ import React from "react";
 import L from 'leaflet';
 import { TileLayer, Marker, Popup, MapContainer } from "react-leaflet";
 import './MapComponent.css';
+import xmlToJson from '../xmlToJson'
+import Stops from "./Stops";
 
 L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.5.0/dist/images/";
 
-class MapComponent extends React.Component {
-    state = {
-        lat: 55.702868,
-        lng: 37.530865,
-        zoom: 10
-    };
+const stops = await fetch("https://tosamara.ru/api/v2/classifiers/stopsFullDB.xml")
+    .then(response => response.text())
+    .then(str => new DOMParser().parseFromString(str, "text/xml"))
+    .then(result => { return xmlToJson(result).stops });
 
-    render() {
-        var center = [this.state.lat, this.state.lng];
+// console.log(stops.stop[4]);
+// console.log(parseFloat(stops.stop[4].latitude['#text']));
+// console.log(parseFloat(stops.stop[4].longitude['#text']));
+// console.log(parseInt(stops.stop[4].KS_ID['#text']));
 
-        return (
-            <MapContainer zoom={this.state.zoom} center={center}>
-                <TileLayer
-                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                <Marker position={center}>
-                    <Popup>Тестовый текст</Popup>
-                </Marker>
-            </MapContainer>
-        );
-    }
+function MapComponent(props) {
+    return (
+        <MapContainer zoom={props.zoom} center={[props.lat, props.lng]}>
+            <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[props.lat, props.lng]}>
+                <Popup>Тестовый текст</Popup>
+            </Marker>
+            <Stops stopsList={stops.stop} />
+        </MapContainer>
+    );
 };
 
 export default MapComponent;
