@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import L from 'leaflet';
 import { TileLayer, Marker, Popup, MapContainer } from "react-leaflet";
 import './MapComponent.css';
@@ -26,32 +26,50 @@ function MapComponent(props) {
         setStopsVisibility(cur => !cur);
     }
 
-    return (
-        <MapContainer zoom={props.zoom} center={[props.lat, props.lng]}>
-            <TileLayer
-                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
+    const [location, setLocation] = useState(null);
 
-            <div className="stops-toggle">
-                <label htmlFor="layertoggle">Показать остановки </label>
-                <input type="checkbox"
-                    name="layertoggle"
-                    id="layertoggle"
-                    value={stopsVisibility}
-                    onChange={onVisibilityToggle}
+    function getLocationSuccess(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        setLocation({ latitude, longitude });
+        console.log(`Широта: ${latitude}, Долгота: ${longitude}`);
+    }
+
+    function getLocationError() {
+        setLocation({ latitude: 53.213917354263195, longitude: 50.1752420233374 });
+        console.log("Не удалось получить геопозицию пользователя");
+    }
+
+    useEffect(() => navigator.geolocation.getCurrentPosition(getLocationSuccess, getLocationError), []);
+
+    if (location) {
+        return (
+            <MapContainer zoom="17" center={[location.latitude, location.longitude]}>
+                <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-            </div>
 
-            {stopsVisibility &&
-                <Stops stopsList={stops.stop} />
-            }
+                <div className="stops-toggle">
+                    <label htmlFor="layertoggle">Показать остановки </label>
+                    <input type="checkbox"
+                        name="layertoggle"
+                        id="layertoggle"
+                        value={stopsVisibility}
+                        onChange={onVisibilityToggle}
+                    />
+                </div>
 
-            <Marker position={[props.lat, props.lng]}>
-                <Popup>Текущая геопозиция</Popup>
-            </Marker>
-        </MapContainer>
-    );
+                {stopsVisibility &&
+                    <Stops stopsList={stops.stop} />
+                }
+
+                <Marker position={[location.latitude, location.longitude]}>
+                    <Popup>Текущая геопозиция</Popup>
+                </Marker>
+            </MapContainer>
+        );
+    }
 };
 
 export default MapComponent;

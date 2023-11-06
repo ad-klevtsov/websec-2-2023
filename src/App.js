@@ -1,9 +1,16 @@
 import React from 'react';
 import MapComponent from './Components/MapComponent';
+import './index.css'
+import FavoriteStops from './Components/FavoriteStops';
 
 function App() {
-  return (
-    <MapComponent lat="53.213917354263195" lng="50.1752420233374" zoom="17"/>
-  );
+  return (<div className='wrapper'>
+    <main className='map-container'>
+      <MapComponent/>
+    </main>
+    <aside>
+      <FavoriteStops />
+    </aside>
+  </div>);
 }
 export default App;
