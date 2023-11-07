@@ -13,16 +13,12 @@ const stops = await fetch("https://tosamara.ru/api/v2/classifiers/stopsFullDB.xm
     .then(str => new DOMParser().parseFromString(str, "text/xml"))
     .then(result => { return xmlToJson(result).stops });
 
-// console.log(stops.stop[4]);
-// console.log(parseFloat(stops.stop[4].latitude['#text']));
-// console.log(parseFloat(stops.stop[4].longitude['#text']));
-// console.log(parseInt(stops.stop[4].KS_ID['#text']));
-
 function MapComponent(props) {
 
     const [stopsVisibility, setStopsVisibility] = useState(false);
 
     const onVisibilityToggle = () => {
+        !stopsVisibility ? console.log('Остановки показаны') : console.log('Остановки скрыты');
         setStopsVisibility(cur => !cur);
     }
 
@@ -32,7 +28,7 @@ function MapComponent(props) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         setLocation({ latitude, longitude });
-        console.log(`Широта: ${latitude}, Долгота: ${longitude}`);
+        console.log(`Геопозиция пользователя:\nШирота: ${latitude}, Долгота: ${longitude}`);
     }
 
     function getLocationError() {
@@ -44,7 +40,7 @@ function MapComponent(props) {
 
     if (location) {
         return (
-            <MapContainer zoom="17" center={[location.latitude, location.longitude]}>
+            <MapContainer zoom="15" center={[location.latitude, location.longitude]}>
                 <TileLayer
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -69,6 +65,9 @@ function MapComponent(props) {
                 </Marker>
             </MapContainer>
         );
+    }
+    else {
+        return (<div>Загружаем карту</div>);
     }
 };
 
