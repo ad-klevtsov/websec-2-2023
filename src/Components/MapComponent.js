@@ -57,7 +57,7 @@ function MapComponent(props) {
                 </div>
 
                 {stopsVisibility &&
-                    <Stops stopsList={stops.stop} />
+                    <Stops stopsList={stops.stop} onFavoriteAdd={props.onFavoriteAdd}/>
                 }
 
                 <Marker position={[location.latitude, location.longitude]}>

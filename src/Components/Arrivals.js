@@ -13,8 +13,8 @@ function Arrivals(props) {
     if (arrivalsInfo) {
         if (arrivalsInfo.length > 0) {
             return (<div>
-                {arrivalsInfo.map((el) => (
-                    <p key={parseInt(el.KR_ID['#text'])}> {el.type} №{el.number} через {el.time} минут</p>
+                {arrivalsInfo.map((el, index) => (
+                    <p key={index}> {el.type} №{el.number} через {el.time} минут</p>
                 ))}
             </div>)
         }
