@@ -40,17 +40,28 @@ img{vertical-align: top;}
 
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: #ebebeb;
+    overflow-y: scroll;
 }
 
 #root {
     max-width: 1170px;
     height: 100%;
     margin: 0 auto;
+    padding: 5px;
 }
 
 .wrapper {
     height: 100%;
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+    .wrapper {
+        min-width: 450px;
+        /* flex-direction: column; */
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import MapComponent from './Components/MapComponent';
 import './index.css'
 import FavoriteStops from './Components/FavoriteStops';
-import { findByPlaceholderText } from '@testing-library/react';
 
 function App() {
   const [favStops, setFavStops] = useState([]);
@@ -26,7 +25,7 @@ function App() {
       <MapComponent onFavoriteAdd={onfavoriteAdd} />
     </main>
     <aside>
-      <FavoriteStops favList={favStops} onFavoriteRemove={onFavoriteRemove}/>
+      <FavoriteStops favList={favStops} onFavoriteRemove={onFavoriteRemove} />
     </aside>
   </div>);
 }

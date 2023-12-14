@@ -6,11 +6,11 @@ function FavoriteStops(props) {
     return (<div className='favorite-stops'>
         <div className="favorite-stops__header">Избранные остановки</div>
         {(props.favList.length > 0) &&
-            props.favList.map((el, index) => (<div key={el.id}>
-                <button onClick={() => props.onFavoriteRemove(el.id)}>Удалить из избранного</button>
-                <p>{el.name}</p>
+            props.favList.map((el, index) => (<div className="favorite-stops__item" key={el.id}>
+                <p className="favorite-stops__item-name">{el.name}</p>
                 <Arrivals id={el.id}></Arrivals>
                 <br></br>
+                <button onClick={() => props.onFavoriteRemove(el.id)}>Удалить из избранного</button>
             </div>))
         }
     </div>)

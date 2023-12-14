@@ -14,7 +14,7 @@ function Arrivals(props) {
         if (arrivalsInfo.length > 0) {
             return (<div>
                 {arrivalsInfo.map((el, index) => (
-                    <p key={index}> {el.type} №{el.number} через {el.time} минут</p>
+                    <p key={index}> {el.type} {el.number} через {el.time} минут</p>
                 ))}
             </div>)
         }
